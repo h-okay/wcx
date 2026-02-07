@@ -19,9 +19,7 @@
 | Stdin via `-` file operand | yes | yes |
 | JSON output (`--json`) | no | yes |
 
-## wcx extension
-
-- `--json` outputs machine-readable counts while preserving normal GNU behavior unless explicitly enabled.
+`--json` outputs machine-readable counts while preserving normal GNU behavior unless explicitly enabled.
 
 Example:
 
@@ -34,12 +32,6 @@ Example:
 ```txt
 wcx [OPTION]... [FILE]...
 ```
-
-Default output matches GNU `wc`: `lines words bytes`.
-
-If one or more count options are provided, output order is always:
-
-`lines words chars bytes max-line-length`
 
 ## Examples
 
@@ -85,7 +77,7 @@ The benchmark badge and table are updated automatically by the CI pipeline on `m
 
 ### CLI Comparison (median of 20 runs)
 | Tool | ms/op |
-| --- | ---: | --- |
+| --- | ---: |
 | `wcx -l -w -m -c -L benchmark-input.txt` | 83.33 |
 | `wc -l -w -m -c -L benchmark-input.txt` | 10.63 |
 <!-- BENCHMARKS:END -->
