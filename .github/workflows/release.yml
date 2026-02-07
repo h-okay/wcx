@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-main
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Test
+        run: go test ./...
+
+      - name: Fuzz smoke tests
+        run: |
+          go test ./internal/cli -run=^$ -fuzz=Fuzz -fuzztime=5s
+          go test ./internal/wc -run=^$ -fuzz=Fuzz -fuzztime=5s
+
+      - name: Compute next semantic version
+        id: semver
+        run: ./scripts/release/compute_semver.sh
+
+      - name: Create tag
+        if: steps.semver.outputs.should_release == 'true'
+        run: ./scripts/release/create_tag_if_missing.sh "${{ steps.semver.outputs.version }}"
+
+      - name: Build release binaries
+        if: steps.semver.outputs.should_release == 'true'
+        run: ./scripts/release/build_assets.sh "${{ steps.semver.outputs.version }}"
+
+      - name: Publish GitHub release
+        if: steps.semver.outputs.should_release == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./scripts/release/publish_release.sh "${{ steps.semver.outputs.version }}"

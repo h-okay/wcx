@@ -1,42 +1,87 @@
-# wc-tool
+# wcx
+
+[![Tests](https://github.com/h-okay/wc-tool/actions/workflows/ci.yml/badge.svg)](https://github.com/h-okay/wc-tool/actions/workflows/ci.yml)
+[![Release](https://github.com/h-okay/wc-tool/actions/workflows/release.yml/badge.svg)](https://github.com/h-okay/wc-tool/actions/workflows/release.yml)
+[![Benchmark](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/h-okay/wc-tool/main/.github/badges/benchmark.json)](https://github.com/h-okay/wc-tool/actions/workflows/ci.yml)
+
+`wcx` is a drop-in replacement for GNU `wc` with one extra extension: `--json`.
+
+## What it supports
+
+- GNU-compatible core options: `-c`, `-m`, `-l`, `-L`, `-w`
+- GNU-compatible multi-file behavior and totals
+- `--files0-from=F`
+- `--total=auto|always|only|never`
+- `--version`
+- zero third-party dependencies (stdlib only)
+- CI runs unit tests and short fuzz smoke tests on PRs and `main`
+- Stdin behavior:
+  - no file args -> read stdin
+  - `-` file operand -> read stdin at that position
+
+## wcx extension
+
+- `--json` outputs machine-readable counts while preserving normal GNU behavior unless explicitly enabled.
+
+Example:
+
+```bash
+./wcx --json internal/wc/testdata/test.txt
+```
+
+## Usage
 
 ```txt
-NAME:
-   wc-tool - count bytes in a file
-
-USAGE:
-   wc-tool [OPTIONS] FILE
-
-DESCRIPTION:
-   A command-line tool for counting various metrics in a file.
-
-COMMANDS:
-   help, h  Shows a list of commands or help for one command
-
-GLOBAL OPTIONS:
-   --bytes, -c  Print the byte count
-   --lines, -l  Print the line count
-   --words, -w  Print the words count
-   --chars, -m  Print the chars count
-   --help, -h   show help
+wcx [OPTION]... [FILE]...
 ```
 
-**Results printed in order: `lines words chars bytes`**
+Default output matches GNU `wc`: `lines words bytes`.
 
-**Currently supports a single file.**
+If one or more count options are provided, output order is always:
 
-**If no stdin or file given, the text can be copy pasted.**
+`lines words chars bytes max-line-length`
+
+## Examples
+
 ```bash
-./wc-tool
+# default counts (lines, words, bytes)
+./wcx internal/wc/testdata/test.txt
 
-Professor Michael S. Hart was the originator of the Project
-Gutenberg™ concept of a library of electronic works that could be
-freely shared with anyone. For forty years, he produced and
-distributed Project Gutenberg™ eBooks with only a loose network of
-volunteer support.
+# chars only
+./wcx -m internal/wc/testdata/test.txt
+
+# max line length only
+./wcx -L internal/wc/testdata/test.txt
+
+# multiple files + automatic total
+./wcx internal/wc/testdata/test.txt internal/wc/testdata/test.txt
+
+# files listed in a NUL-delimited file list
+./wcx --files0-from=filelist.txt
+
+# only print total counts
+./wcx --total=only internal/wc/testdata/test.txt internal/wc/testdata/test.txt
 ```
-`CTRL+D` to stop input and get the results.
 
-**Usage**
+## Build
 
-<a href="https://asciinema.org/a/608819?t=10" target="_blank"><img src="https://asciinema.org/a/608819.svg?t=10" width=500px/></a>
+```bash
+go build -o wcx ./cmd/wcx
+```
+
+## Benchmarks
+
+The benchmark badge and table are updated automatically by the CI pipeline on `main`.
+
+<!-- BENCHMARKS:START -->
+### Go Micro-Benchmark
+| Benchmark | ns/op | B/op | allocs/op |
+| --- | ---: | ---: | ---: |
+| `BenchmarkCountReader` | _pending CI run_ | _pending_ | _pending_ |
+
+### CLI Comparison (median of 20 runs)
+| Tool | ms/op | Notes |
+| --- | ---: | --- |
+| `wcx -l -w -m -c -L benchmark-input.txt` | _pending_ | _pending_ |
+| `wc -l -w -m -c -L benchmark-input.txt` | _pending_ | GNU reference |
+<!-- BENCHMARKS:END -->

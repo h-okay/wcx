@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Unit tests
+        run: go test ./...
+
+      - name: Fuzz smoke tests
+        run: |
+          go test ./internal/cli -run=^$ -fuzz=Fuzz -fuzztime=5s
+          go test ./internal/wc -run=^$ -fuzz=Fuzz -fuzztime=5s
+
+  benchmark:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.actor != 'github-actions[bot]'
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Run benchmark
+        run: ./scripts/ci/run_benchmark.sh
+
+      - name: Update benchmark badge and README
+        run: ./scripts/ci/update_benchmark_artifacts.py
+
+      - name: Commit benchmark updates
+        run: ./scripts/ci/commit_benchmark_updates.sh
