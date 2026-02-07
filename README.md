@@ -1,7 +1,6 @@
 # wcx
 
 [![Tests](https://github.com/h-okay/wc-tool/actions/workflows/ci.yml/badge.svg)](https://github.com/h-okay/wc-tool/actions/workflows/ci.yml)
-[![Release](https://github.com/h-okay/wc-tool/actions/workflows/release.yml/badge.svg)](https://github.com/h-okay/wc-tool/actions/workflows/release.yml)
 [![Benchmark](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/h-okay/wc-tool/main/.github/badges/benchmark.json)](https://github.com/h-okay/wc-tool/actions/workflows/ci.yml)
 
 `wcx` is a drop-in replacement for GNU `wc` with one extra extension: `--json`.
