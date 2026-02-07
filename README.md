@@ -10,16 +10,14 @@
 
 | Capability | GNU `wc` | `wcx` |
 | --- | --- | --- |
-| Core options `-c -m -l -L -w` | yes | yes (compatible) |
-| Multi-file output + totals | yes | yes (compatible) |
-| `--files0-from=F` | yes | yes |
-| `--total=auto|always|only|never` | yes | yes |
-| `--version` | yes | yes |
+| Core options `-c -m -l -L -w` | yes | yes |
+| Multi-file output + totals | yes | yes |
+| --files0-from=F | yes | yes |
+| --total=`auto\|always\|only\|never` | yes | yes |
+| --version | yes | yes |
 | Stdin with no file args | yes | yes |
 | Stdin via `-` file operand | yes | yes |
-| JSON output (`--json`) | no | yes (extension) |
-| Third-party runtime deps | n/a | none (stdlib only) |
-| CI tests + fuzz smoke tests | n/a | yes (PRs and `main`) |
+| JSON output (`--json`) | no | yes |
 
 ## wcx extension
 
