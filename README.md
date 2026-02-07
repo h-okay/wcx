@@ -77,7 +77,7 @@ The benchmark badge and table are updated automatically by the CI pipeline on `m
 
 ### CLI Comparison (median of 20 runs)
 | Tool | ms/op |
-| --- | ---: | --- |
+| --- | ---: |
 | `wcx -l -w -m -c -L benchmark-input.txt` | 83.70 |
 | `wc -l -w -m -c -L benchmark-input.txt` | 10.67 |
 <!-- BENCHMARKS:END -->
