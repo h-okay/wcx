@@ -83,16 +83,11 @@ The benchmark badge and table are updated automatically by the CI pipeline on `m
 ### Go Micro-Benchmark
 | Benchmark | ns/op | B/op | allocs/op |
 | --- | ---: | ---: | ---: |
-| `BenchmarkCountReader` | 79762117 ns/op | 65584 B/op | 2 allocs/op |
+| `BenchmarkCountReader` | 79802479 ns/op | 65584 B/op | 2 allocs/op |
 
 ### CLI Comparison (median of 20 runs)
 | Tool | ms/op |
 | --- | ---: | --- |
-<<<<<<< Updated upstream
-| `wcx -l -w -m -c -L benchmark-input.txt` | 83.65 | matches GNU wc output |
-| `wc -l -w -m -c -L benchmark-input.txt` | 10.61 | GNU reference |
-=======
-| `wcx -l -w -m -c -L benchmark-input.txt` | _pending_ |
-| `wc -l -w -m -c -L benchmark-input.txt` | _pending_ |
->>>>>>> Stashed changes
+| `wcx -l -w -m -c -L benchmark-input.txt` | 83.33 |
+| `wc -l -w -m -c -L benchmark-input.txt` | 10.63 |
 <!-- BENCHMARKS:END -->
