@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
   "label": "benchmark",
-  "message": "79702480 ns/op",
+  "message": "65795894 ns/op",
   "color": "blue"
 }

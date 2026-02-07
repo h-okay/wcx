@@ -72,11 +72,11 @@ The benchmark badge and table are updated automatically by the CI pipeline on `m
 ### Go Micro-Benchmark
 | Benchmark | ns/op | B/op | allocs/op |
 | --- | ---: | ---: | ---: |
-| `BenchmarkCountReader` | 79702480 ns/op | 65584 B/op | 2 allocs/op |
+| `BenchmarkCountReader` | 65795894 ns/op | 65584 B/op | 2 allocs/op |
 
 ### CLI Comparison (median of 20 runs)
 | Tool | ms/op |
 | --- | ---: |
-| `wcx -l -w -m -c -L benchmark-input.txt` | 83.15 |
-| `wc -l -w -m -c -L benchmark-input.txt` | 10.65 |
+| `wcx -l -w -m -c -L benchmark-input.txt` | 67.78 |
+| `wc -l -w -m -c -L benchmark-input.txt` | 8.18 |
 <!-- BENCHMARKS:END -->
