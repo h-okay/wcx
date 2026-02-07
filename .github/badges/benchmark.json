@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
   "label": "benchmark",
-  "message": "pending",
-  "color": "lightgrey"
+  "message": "79762117 ns/op",
+  "color": "blue"
 }
