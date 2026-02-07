@@ -55,3 +55,40 @@ jobs:
 
       - name: Commit benchmark updates
         run: ./scripts/ci/commit_benchmark_updates.sh
+
+  release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.actor != 'github-actions[bot]'
+    needs: test
+    runs-on: ubuntu-latest
+    concurrency:
+      group: release-main
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Compute next semantic version
+        id: semver
+        run: ./scripts/release/compute_semver.sh
+
+      - name: Create tag
+        if: steps.semver.outputs.should_release == 'true'
+        run: ./scripts/release/create_tag_if_missing.sh "${{ steps.semver.outputs.version }}"
+
+      - name: Build release binaries
+        if: steps.semver.outputs.should_release == 'true'
+        run: ./scripts/release/build_assets.sh "${{ steps.semver.outputs.version }}"
+
+      - name: Publish GitHub release
+        if: steps.semver.outputs.should_release == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./scripts/release/publish_release.sh "${{ steps.semver.outputs.version }}"
