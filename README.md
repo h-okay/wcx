@@ -8,16 +8,18 @@
 
 ## What it supports
 
-- GNU-compatible core options: `-c`, `-m`, `-l`, `-L`, `-w`
-- GNU-compatible multi-file behavior and totals
-- `--files0-from=F`
-- `--total=auto|always|only|never`
-- `--version`
-- zero third-party dependencies (stdlib only)
-- CI runs unit tests and short fuzz smoke tests on PRs and `main`
-- Stdin behavior:
-  - no file args -> read stdin
-  - `-` file operand -> read stdin at that position
+| Capability | GNU `wc` | `wcx` |
+| --- | --- | --- |
+| Core options `-c -m -l -L -w` | yes | yes (compatible) |
+| Multi-file output + totals | yes | yes (compatible) |
+| `--files0-from=F` | yes | yes |
+| `--total=auto|always|only|never` | yes | yes |
+| `--version` | yes | yes |
+| Stdin with no file args | yes | yes |
+| Stdin via `-` file operand | yes | yes |
+| JSON output (`--json`) | no | yes (extension) |
+| Third-party runtime deps | n/a | none (stdlib only) |
+| CI tests + fuzz smoke tests | n/a | yes (PRs and `main`) |
 
 ## wcx extension
 
@@ -69,6 +71,10 @@ If one or more count options are provided, output order is always:
 go build -o wcx ./cmd/wcx
 ```
 
+## Demo
+
+![wcx demo](wcx-demo.gif)
+
 ## Benchmarks
 
 The benchmark badge and table are updated automatically by the CI pipeline on `main`.
@@ -80,8 +86,13 @@ The benchmark badge and table are updated automatically by the CI pipeline on `m
 | `BenchmarkCountReader` | 79762117 ns/op | 65584 B/op | 2 allocs/op |
 
 ### CLI Comparison (median of 20 runs)
-| Tool | ms/op | Notes |
+| Tool | ms/op |
 | --- | ---: | --- |
+<<<<<<< Updated upstream
 | `wcx -l -w -m -c -L benchmark-input.txt` | 83.65 | matches GNU wc output |
 | `wc -l -w -m -c -L benchmark-input.txt` | 10.61 | GNU reference |
+=======
+| `wcx -l -w -m -c -L benchmark-input.txt` | _pending_ |
+| `wc -l -w -m -c -L benchmark-input.txt` | _pending_ |
+>>>>>>> Stashed changes
 <!-- BENCHMARKS:END -->

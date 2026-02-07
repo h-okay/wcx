@@ -86,10 +86,10 @@ def write_readme(
         "| --- | ---: | ---: | ---: |\n"
         f"| `BenchmarkCountReader` | {ns_per_op} | {bytes_per_op} | {allocs_per_op} |\n\n"
         "### CLI Comparison (median of 20 runs)\n"
-        "| Tool | ms/op | Notes |\n"
+        "| Tool | ms/op |\n"
         "| --- | ---: | --- |\n"
-        f"| `wcx -l -w -m -c -L benchmark-input.txt` | {wcx_ms} | matches GNU wc output |\n"
-        f"| `wc -l -w -m -c -L benchmark-input.txt` | {gnu_ms} | GNU reference |"
+        f"| `wcx -l -w -m -c -L benchmark-input.txt` | {wcx_ms} |\n"
+        f"| `wc -l -w -m -c -L benchmark-input.txt` | {gnu_ms} |"
     )
 
     replacement = f"{start}\n{body}\n{end}"
